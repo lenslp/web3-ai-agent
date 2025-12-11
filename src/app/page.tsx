@@ -3,7 +3,7 @@ import * as React from 'react';
 interface IAppProps {
 }
 
-const App: React.FunctionComponent<IAppProps> = (props) => {
+const App: React.FunctionComponent<IAppProps> = () => {
   return <div>hello world</div>;
 };
 
