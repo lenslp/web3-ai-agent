@@ -34,16 +34,6 @@ const typeDefs = `
   }
 `;
 
-// Convert GraphQL message format → OpenAI Responses API format
-function toResponsesMessages(
-  msgs: Array<{ role: string; content: string }>
-) {
-  return msgs.map((m) => ({
-    role: m.role,
-    content: m.content,
-  }));
-}
-
 // Safe extraction of Responses API output text
 function extractOutputText(resp: unknown): string {
   const o = resp as { output_text?: string };
