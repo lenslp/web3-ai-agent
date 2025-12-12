@@ -45,8 +45,9 @@ function toResponsesMessages(
 }
 
 // Safe extraction of Responses API output text
-function extractOutputText(resp: any): string {
-  return resp?.output_text ?? "";
+function extractOutputText(resp: unknown): string {
+  const o = resp as { output_text?: string };
+  return typeof o.output_text === "string" ? o.output_text : "";
 }
 
 // Resolvers
