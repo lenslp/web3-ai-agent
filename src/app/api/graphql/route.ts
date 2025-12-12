@@ -70,20 +70,17 @@ const resolvers = {
           ? history.filter((m) => m.role && m.content)
           : [];
 
-        // Build messages
-        const messages = [
-          { role: "system", content: "You are a helpful assistant." },
-          ...safeHistory,
-          { role: "user", content: message },
-        ];
-
-        // Convert to Responses API input format
-        const input = toResponsesMessages(messages);
+        // Build plain-text input for Responses API
+        const historyText = safeHistory
+          .map((m) => `${m.role}: ${m.content}`)
+          .join("\n");
+        const input = `${historyText ? historyText + "\n" : ""}user: ${message}`;
 
         // Call OpenAI Responses API
         const resp = await openai.responses.create({
           model: "gpt-5.1",
           input,
+          instructions: "You are a helpful assistant.",
         });
 
         // Extract text from Responses output
@@ -109,7 +106,13 @@ const schema = createSchema({ typeDefs, resolvers });
 const { handleRequest } = createYoga({
   schema,
   graphqlEndpoint: "/api/graphql",
-  fetchAPI: { Response },
+  fetchAPI: { Request, Response },
 });
 
-export { handleRequest as GET, handleRequest as POST };
+export async function GET(request: Request) {
+  return handleRequest(request, {});
+}
+
+export async function POST(request: Request) {
+  return handleRequest(request, {});
+}
