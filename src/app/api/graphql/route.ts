@@ -56,7 +56,7 @@ const resolvers = {
     ) => {
       try {
         // 仅从 ctx.env 获取 API Key（移除 process.env 兼容）
-        const apiKey = ctx.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+        const apiKey = ctx?.env?.OPENAI_API_KEY || process.env.OPENAI_API_KEY;
         if (!apiKey) {
           return {
             content: "OpenAI API key is not configured. Set OPENAI_API_KEY in Cloudflare Secrets.",
