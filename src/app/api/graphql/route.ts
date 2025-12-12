@@ -1,15 +1,5 @@
 import { createSchema, createYoga } from "graphql-yoga";
 import OpenAI from "openai";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-
-function getOpenAI(): OpenAI | null {
-  const ctx = getCloudflareContext();
-  const apiKey = ctx?.env?.OPENAI_API_KEY ?? process.env.OPENAI_API_KEY;
-  if (!apiKey || typeof apiKey !== "string" || apiKey.length === 0) {
-    return null;
-  }
-  return new OpenAI({ apiKey });
-}
 
 // GraphQL Schema
 const typeDefs = `
@@ -55,17 +45,19 @@ const resolvers = {
       {
         message,
         history,
-      }: { message: string; history?: Array<{ role: string; content: string }> }
+      }: { message: string; history?: Array<{ role: string; content: string }> },
+      ctx: any,
     ) => {
       try {
-        const openai = getOpenAI();
-        if (!openai) {
+        const apiKey = ctx.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+        if (!apiKey) {
           return {
             content:
               "OpenAI API key is not configured. Set OPENAI_API_KEY in Cloudflare secrets or .dev.vars.",
             toolCalls: [],
           };
         }
+        const openai = new OpenAI({ apiKey });
 
         // Validate history
         const safeHistory = Array.isArray(history)
