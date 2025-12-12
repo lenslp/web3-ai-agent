@@ -102,13 +102,6 @@ const yoga = createYoga<{ env: Env }>({ // 显式声明上下文类型
   }),
 });
 
-// 8. Cloudflare Workers 入口函数（核心：传递 env 到 Yoga）
-export default {
-  async fetch(request: Request, env: Env) { // env 是 Cloudflare 注入的环境变量
-    return yoga.handleRequest(request, { env }); // 传递 env 到 Yoga 上下文
-  },
-};
-
 // 兼容 GET/POST 单独导出（可选，推荐用上面的 fetch 入口）
 export async function GET(request: Request, env: Env) {
   return yoga.handleRequest(request, { env });
