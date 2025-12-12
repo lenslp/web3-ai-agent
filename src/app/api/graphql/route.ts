@@ -1,5 +1,14 @@
-import { createSchema, createYoga } from "graphql-yoga";
+import { createSchema, createYoga, YogaInitialContext } from "graphql-yoga";
 import OpenAI from "openai";
+
+interface Env {
+  OPENAI_API_KEY: string;
+}
+
+// Resolver context type
+interface GraphQLContext extends YogaInitialContext {
+  env: Env;
+}
 
 // GraphQL Schema
 const typeDefs = `
@@ -46,7 +55,7 @@ const resolvers = {
         message,
         history,
       }: { message: string; history?: Array<{ role: string; content: string }> },
-      ctx: any,
+      ctx: GraphQLContext
     ) => {
       try {
         const apiKey = ctx.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY;
