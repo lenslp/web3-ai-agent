@@ -103,10 +103,10 @@ const yoga = createYoga<{ env: Env }>({ // 显式声明上下文类型
 });
 
 // 兼容 GET/POST 单独导出（可选，推荐用上面的 fetch 入口）
-export async function GET(request: Request, env: Env) {
+export async function GET(request: Request, env: any) {
   return yoga.handleRequest(request, { env });
 }
 
-export async function POST(request: Request, env: Env) {
+export async function POST(request: Request, env: any) {
   return yoga.handleRequest(request, { env });
 }
