@@ -99,7 +99,7 @@ export default function Home() {
           </div>
           <div>
             <h1 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Web3 AI Agent
+              AI Chat
             </h1>
             <p className="text-xs text-gray-400 flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>

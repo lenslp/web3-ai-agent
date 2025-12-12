@@ -72,7 +72,7 @@ const resolvers = {
         const input = `${historyText ? historyText + "\n" : ""}user: ${message}`;
 
         const resp = await openai.responses.create({
-          model: "gpt-5.1",
+          model: "gpt-5",
           input,
           instructions: "You are a helpful assistant.",
         });
