@@ -11,6 +11,11 @@ type Message = {
   toolCalls?: string[]; // 记录使用的工具
 };
 
+type GraphQLResponse = {
+  data?: { chat: { content: string; toolCalls: string[] } };
+  errors?: Array<{ message: string }>;
+};
+
 export default function Home() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -57,13 +62,13 @@ export default function Home() {
         }),
       });
 
-      const json = await res.json();
+      const json = (await res.json()) as GraphQLResponse;
       
       if (json.errors) {
         throw new Error(json.errors[0].message);
       }
 
-      const data = json.data.chat;
+      const data = json.data!.chat;
       
       setMessages((prev) => [
         ...prev,
